@@ -1,5 +1,9 @@
 class DataType:
-    ...
+    
+    def __eq__(self, other):
+        if isinstance(other, DataType):
+            return str(self) == str(other)
+        return False
 
 class Field:
 
@@ -29,19 +33,16 @@ class TimestampType(DataType):
         return "timestamp"
 
 class TupleType(DataType):
-    def __init__(self, fields: list[Field]):
+    def __init__(self, fields: dict[str, DataType]):
         self.fields = fields
 
     def get(self, name: str) -> Field:
-        for field in self.fields:
-            if field.name == name:
-                return field
-        raise KeyError(name)
+        return self.fields[name]
 
     def __str__(self):
         string = "("
-        string += ", ".join(field.name for field in self.fields)
+        string += ", ".join(name for name in self.fields.keys())
         string += ") ["
-        string += ", ".join(str(field.dtype) for field in self.fields)
+        string += ", ".join(str(dtype) for dtype in self.fields.values())
         string += "]"
         return string

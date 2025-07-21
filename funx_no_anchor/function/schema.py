@@ -1,4 +1,4 @@
-from funx.function.data_types import DataType, TupleType
+from funx.function.elements.data_types import DataType, TupleType
 import polars as pl
 
 class Schema:
