@@ -6,10 +6,8 @@ class DataType(ABC):
     def __str__(self) -> str:
         ...
 
-    def __eq__(self, other):
-        if isinstance(other, DataType):
-            return str(self) == str(other)
-        return False
+    def __repr__(self) -> str:
+        return str(self)
 
 class Field:
 
@@ -20,11 +18,11 @@ class Field:
 class IntegerType(DataType):
     def __str__(self):
         return "int"
+    
 
 class RealType(DataType):
     def __str__(self):
         return "real"
-        
 
 class StringType(DataType):
     def __str__(self):
@@ -52,3 +50,10 @@ class TupleType(DataType):
         string += ", ".join(str(dtype) for dtype in self.fields.values())
         string += "]"
         return string
+ 
+class IntervalType(DataType):
+    def __init__(self, domain: DataType):
+        self.domain = domain
+
+    def __str__(self):
+        return f"interval[{self.domain}]"

@@ -22,9 +22,6 @@ class DataFunction:
         self.expr = expr
         self.name = self.expr.meta.output_name()
 
-    def _computed_df(self) -> pl.DataFrame:
-        return self.df.select(list(self.dims.keys()) + [self.expr])
-
     def _anchor_id(self) -> str:
         return f"{id(self.df)}_{id(self.dims)}"
 

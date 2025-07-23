@@ -52,3 +52,10 @@ class TupleType(DataType):
         string += ", ".join(str(dtype) for dtype in self.fields.values())
         string += "]"
         return string
+ 
+class IntervalType(DataType):
+    def __init__(self, domain: DataType):
+        self.domain = domain
+
+    def __str__(self):
+        return f"interval[{self.domain}]"

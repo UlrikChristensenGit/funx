@@ -1,15 +1,12 @@
-from abc import ABC, abstractmethod
-
-class DataType(ABC):
-
-    @abstractmethod
-    def __str__(self) -> str:
-        ...
+class DataType:
 
     def __eq__(self, other):
         if isinstance(other, DataType):
             return str(self) == str(other)
         return False
+    
+    def __hash__(self):
+        return hash(str(self))
 
 class Field:
 
@@ -24,7 +21,6 @@ class IntegerType(DataType):
 class RealType(DataType):
     def __str__(self):
         return "real"
-        
 
 class StringType(DataType):
     def __str__(self):
@@ -38,12 +34,27 @@ class TimestampType(DataType):
     def __str__(self):
         return "timestamp"
 
+class TimedeltaType(DataType):
+    def __str__(self):
+        return "timedelta"
+
+class IntervalType(DataType):
+    def __init__(self, domain: DataType):
+        self.domain = domain
+
+    def __str__(self):
+        return f"interval[{self.domain}]"
+
+class BallType(DataType):
+    def __init__(self, domain: float):
+        self.domain = domain
+
+    def __str__(self):
+        return "ball"
+
 class TupleType(DataType):
     def __init__(self, fields: dict[str, DataType]):
         self.fields = fields
-
-    def get(self, name: str) -> Field:
-        return self.fields[name]
 
     def __str__(self):
         string = "("

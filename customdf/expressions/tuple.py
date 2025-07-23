@@ -1,24 +1,23 @@
-from .base import DataFunction
-from abc import ABC, abstractmethod
+from .base import Base
 
-class AbstractTuple(ABC):
+
+class Vector(Base):
+
+    def __init__(self, *args, fields: dict[str, type[Base]], **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields = fields
 
     @classmethod
-    @abstractmethod
-    def from_elements(cls, mapping: dict | list):
-        ...
+    def from_elements(cls, elements: dict[str, Base]) -> 'Vector':
+        pl_expr = pl.struct([
+            v.pl_expr.alias(k) for k, v in elements.items()
+        ])
 
-    @abstractmethod
-    def __getitem__(self):
-        ...
-
-    @property
-    @abstractmethod
-    def names(self):
-        ...
+        fields = {k: v.__class__ for k, v in elements.items()}
+        # nested fields???
 
     def __add__(self, other):
-        if isinstance(other, AbstractTuple):
+        if isinstance(other, Vector):
 
             if set(self.names) != set(other.names):
                 raise ValueError("Cannot add tuples with different fields.")
@@ -28,9 +27,6 @@ class AbstractTuple(ABC):
             mapping = {name: self[name] + other for name in self.names}
 
         return self.from_elements(mapping)
-
-
-class TupleFunction(DataFunction, AbstractTuple):
 
     def sum(self):
         mapping = {name: elem.sum() for name, elem in self.items()}

@@ -7,7 +7,7 @@ class Real(Protocol):
     Protocol for an abstract real number.
     Based on the built-in `float` type in Python.
     """
-    
+
     def __add__(self, other: "Real" | Integer) -> "Real":
         ...
 

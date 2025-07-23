@@ -1,46 +1,42 @@
 from .base import DataFunction
-from .integer import IntFunction
+from .real import RealFunction
 
 
-class RealFunction(DataFunction):
+class IntFunction(DataFunction):
 
     @register_add
     def _(self, other):
         return [
-            (RealFunction, RealFunction, self + other),
-            (IntFunction, RealFunction, self + other),
+            (IntFunction, IntFunction, self + other),
         ]
-
+    
     @register_sub
     def _(self, other):
         return [
-            (RealFunction, RealFunction, self - other),
-            (IntFunction, RealFunction, self - other),
+            (IntFunction, IntFunction, self - other),
         ]
-
+    
     @register_mul
     def _(self, other):
         return [
-            (RealFunction, RealFunction, self * other),
-            (IntFunction, RealFunction, self * other),
+            (IntFunction, IntFunction, self * other),
         ]
-
+    
     @register_div
     def _(self, other):
         return [
-            (RealFunction, RealFunction, self / other),
             (IntFunction, RealFunction, self / other),
         ]
-
+    
     @register_pow
     def _(self, other):
         return [
             (RealFunction, RealFunction, self ** other),
             (IntFunction, RealFunction, self ** other),
         ]
-
+    
     @register_sum
     def _(self):
         return [
-            (RealFunction, self.sum())
+            (IntFunction, self.sum())
         ]
